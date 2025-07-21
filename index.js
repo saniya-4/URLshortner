@@ -1,12 +1,26 @@
 const express=require("express")
+const path=require("path");
 const {connectToMongoDb} =require("./connect.js")
 const app=express();
+const staticRoute=require("./routes/staticRouter.js")
 const urlRoute=require("./routes/url")
 const PORT=8001;
 app.use(express.json());
+//to parse the form data
+app.use(express.urlencoded({extended:true}));
 const URL=require("./models/url")
 app.use('/url',urlRoute);
-app.get('/:shortId',async(req,res)=>
+app.use("/",staticRoute);
+app.set("view engine","ejs");
+app.set("views",path.resolve("./views"));
+app.get("/tests",async(req,res)=>
+{
+    const allUrls=await URL.find({});
+    return res.render("Home",{
+        url:allUrls,
+    });
+});
+app.get('/url/:shortId',async(req,res)=>
 {
     const shortId=req.params.shortId;
     const entry=await URL.findOneAndUpdate({
