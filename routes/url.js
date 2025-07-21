@@ -1,4 +1,5 @@
 const express=require("express")
+
 const {handlegenerateShortNewUrl,handleGetAnalytics}=require("../controllers/url")
 const router=express.Router();
 router.post('/',handlegenerateShortNewUrl)

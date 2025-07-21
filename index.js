@@ -4,6 +4,7 @@ const {connectToMongoDb} =require("./connect.js")
 const app=express();
 const staticRoute=require("./routes/staticRouter.js")
 const urlRoute=require("./routes/url")
+const userRoute=require("./routes/user")
 const PORT=8001;
 app.use(express.json());
 //to parse the form data
@@ -11,6 +12,7 @@ app.use(express.urlencoded({extended:true}));
 const URL=require("./models/url")
 app.use('/url',urlRoute);
 app.use("/",staticRoute);
+app.use("/user",userRoute); 
 app.set("view engine","ejs");
 app.set("views",path.resolve("./views"));
 app.get("/tests",async(req,res)=>
