@@ -1,5 +1,7 @@
 const express=require("express")
 const path=require("path");
+const { restrictToLoggedinUserOnly }=require("./middleware/auth.js");
+const cookieParser=require("cookie-parser");
 const {connectToMongoDb} =require("./connect.js")
 const app=express();
 const staticRoute=require("./routes/staticRouter.js")
@@ -9,8 +11,9 @@ const PORT=8001;
 app.use(express.json());
 //to parse the form data
 app.use(express.urlencoded({extended:true}));
+app.use(cookieParser());
 const URL=require("./models/url")
-app.use('/url',urlRoute);
+app.use('/url',restrictToLoggedinUserOnly,urlRoute);
 app.use("/",staticRoute);
 app.use("/user",userRoute); 
 app.set("view engine","ejs");
